@@ -42,6 +42,21 @@ class Dev(Configuration):
     CRISPY_TEMPLATE_PACK = "bootstrap5"
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     ACCOUNT_ACTIVATION_DAYS = 7
+    SITE_ID = 2
+    SOCIALACCOUNT_PROVIDERS = {
+        'google': {
+            'SCOPE': [
+                'profile',
+                'email',
+            ],
+            'AUTH_PARAMS': {
+                'access_type': 'online',
+            }
+        }
+    }
+    #ACCOUNT_EMAIL_REQUIRED = True
+    #ACCOUNT_USERNAME_REQUIRED = False
+    #ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 
     # Application definition
@@ -52,6 +67,7 @@ class Dev(Configuration):
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.messages',
+        "django.contrib.sites",
         'django.contrib.staticfiles',
         #my apps
         'blog',
@@ -60,6 +76,10 @@ class Dev(Configuration):
         "crispy_forms",
         "crispy_bootstrap5",
         "debug_toolbar",
+        "allauth",
+        "allauth.account",
+        "allauth.socialaccount",
+        "allauth.socialaccount.providers.google",
     ]
 
     MIDDLEWARE = [
@@ -157,6 +177,11 @@ class Dev(Configuration):
     # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+    AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
 
 class Prod(Dev):
   DEBUG = False
